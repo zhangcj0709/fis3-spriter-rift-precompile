@@ -26,7 +26,7 @@ module.exports = function(ret, conf, settings, opt) {
   fis.util.map(ret.src, function(subpath, file) {
       if (file.precompileId) {
           //预编译handlebars模板
-          compiledContent += ('templates["' + file.precompileId + '"] = template(' + handlebars.precompile(file.getContent(), opt) + ');\n');
+          compiledContent += ('templates["' + file.precompileId + '"] = template(' + handlebars.precompile(file.getContent(), settings) + ');\n');
       }
   });
   compiledContent += '})();';
