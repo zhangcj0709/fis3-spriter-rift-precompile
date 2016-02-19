@@ -32,7 +32,11 @@ module.exports = function(ret, conf, settings, opt) {
   compiledContent += '})();';
 
   var to = normalizePath(settings.to || './templates.js',  fis.project.getProjectPath());
-  fis.util.write(to, compiledContent, 'UTF-8', false);
+  var file = fis.file(to);
+  if (file.isFile() && file.getContent() == compiledContent) {
+    return; //预编译结果无修改时直接return,防止覆盖文件被监听到导致无限执行
+  }
+  fis.util.write(to, compiledContent, 'utf8', false);
   fis.log.info("Precompiled handlebars templates to '" + to + "'!");
 };
 
