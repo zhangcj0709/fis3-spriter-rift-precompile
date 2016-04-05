@@ -26,7 +26,11 @@ module.exports = function(ret, conf, settings, opt) {
   fis.util.map(ret.src, function(subpath, file) {
       if (file.precompileId) {
           //预编译handlebars模板
-          compiledContent += ('templates["' + file.precompileId + '"] = template(' + handlebars.precompile(file.getContent(), settings) + ');\n');
+          if (file.filename.charAt(0) == "_") {
+            compiledContent += ('Handlebars.registerPartial("' + file.precompileId + '", template(' + handlebars.precompile(file.getContent(), settings) + '));\n');
+          } else {
+            compiledContent += ('templates["' + file.precompileId + '"] = template(' + handlebars.precompile(file.getContent(), settings) + ');\n');
+          }
       }
   });
   compiledContent += '})();';
